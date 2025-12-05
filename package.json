@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "npm-run-all --parallel dev:next dev:emulators",
-    "dev:next": "next dev --turbopack -p 9002",
+    "dev:next": "next dev -p 9002",
     "dev:emulators": "cd functions && npm run build && cd .. && firebase emulators:start",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "patch-package"
   },
   "overrides": {
     "next-themes": {
