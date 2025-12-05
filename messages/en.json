@@ -1,0 +1,195 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "confirm": "Confirm"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "docs": "Documentation",
+    "settings": "Settings",
+    "playground": "Playground",
+    "login": "Log in",
+    "signup": "Sign up",
+    "logout": "Log out"
+  },
+  "home": {
+    "hero": {
+      "title": "The Definitive Canadian Business API",
+      "subtitle": "Power your applications with comprehensive, up-to-date business data from across Canada. Simple, reliable, and free to start.",
+      "cta": "Get Free API Key",
+      "viewDocs": "View Docs"
+    },
+    "features": {
+      "title": "Built for Modern Developers",
+      "subtitle": "Everything you need to integrate Canadian business data into your project seamlessly.",
+      "search": {
+        "title": "Powerful Search",
+        "description": "Access millions of Canadian business records with our fast, reliable, and easy-to-use search endpoints."
+      },
+      "data": {
+        "title": "Up-to-Date Data",
+        "description": "Our data is automatically synced weekly from official government portals to ensure accuracy and freshness."
+      },
+      "developer": {
+        "title": "Developer Focused",
+        "description": "Clean documentation, a generous free tier, and a dedicated developer dashboard to manage your keys and track usage."
+      },
+      "secure": {
+        "title": "Secure & Scalable",
+        "description": "Built on modern Firebase infrastructure, ensuring your application has a secure and scalable foundation."
+      }
+    },
+    "cta": {
+      "title": "Start Building Today",
+      "subtitle": "Generate an API key in seconds and start your integration. No credit card required.",
+      "button": "Get Started for Free"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Enter your credentials to access your dashboard.",
+      "email": "Email",
+      "password": "Password",
+      "button": "Log in",
+      "noAccount": "Don't have an account?",
+      "signupLink": "Sign up"
+    },
+    "signup": {
+      "title": "Create an Account",
+      "subtitle": "Get your free API key in seconds.",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "profession": "Profession",
+      "referral": "How did you hear about us?",
+      "button": "Sign up",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "apiRequests": "API Requests (Today)",
+    "dailyLimit": "/ {limit} daily limit",
+    "apiKeyStatus": "API Key Status",
+    "active": "Active",
+    "operational": "Your key is operational",
+    "documentation": "Documentation",
+    "stableRelease": "Stable release",
+    "apiKey": {
+      "title": "API Key",
+      "description": "Use this key to authenticate your API requests.",
+      "copy": "Copy API Key",
+      "copied": "Copied!",
+      "warning": "Keep your API key secure. Do not share it publicly."
+    },
+    "usage": {
+      "title": "API Usage",
+      "description": "Your API request count for the last 7 days."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account Information",
+      "description": "Your account details. This information is not shared publicly.",
+      "email": "Email Address",
+      "userId": "User ID"
+    },
+    "sync": {
+      "title": "Data Synchronization",
+      "description": "Manually trigger a sync of business data from external sources.",
+      "button": "Sync Data",
+      "lastSync": "Last sync: {date}"
+    },
+    "danger": {
+      "title": "Danger Zone",
+      "description": "These actions are irreversible. Please proceed with caution.",
+      "regenerate": "Generate New API Key",
+      "regenerateWarning": "Your current API key will be invalidated immediately.",
+      "regenerateButton": "Regenerate Key",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "This will permanently invalidate your current API key. Any applications using it will no longer be able to access the API."
+    }
+  },
+  "docs": {
+    "title": "API Documentation",
+    "subtitle": "Integrate Canadian business data into your application with our simple REST API.",
+    "authentication": {
+      "title": "Authentication",
+      "description": "All API requests must be authenticated using an API key. Pass your key in the Authorization header as a Bearer token."
+    },
+    "endpoints": {
+      "title": "Endpoints",
+      "search": {
+        "title": "Search by Name",
+        "description": "Search for businesses by name."
+      },
+      "category": {
+        "title": "Filter by Category",
+        "description": "Fetch businesses belonging to a specific category (NAICS code or description)."
+      },
+      "city": {
+        "title": "Filter by City",
+        "description": "Fetch businesses within a specific city."
+      },
+      "nearby": {
+        "title": "Nearby Search",
+        "description": "Find businesses near a specific geographic coordinate."
+      }
+    }
+  },
+  "playground": {
+    "title": "API Playground",
+    "subtitle": "Test API endpoints interactively. Your API key is automatically used.",
+    "search": {
+      "title": "Search by Name",
+      "description": "Find businesses by their name",
+      "placeholder": "e.g., Maple Leaf"
+    },
+    "category": {
+      "title": "Search by Category",
+      "description": "Filter businesses by category or NAICS code",
+      "placeholder": "e.g., Restaurant, Manufacturing"
+    },
+    "city": {
+      "title": "Search by City",
+      "description": "Find businesses in a specific city",
+      "placeholder": "e.g., Toronto, Vancouver"
+    },
+    "nearby": {
+      "title": "Search Nearby",
+      "description": "Find businesses near geographic coordinates",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "radius": "Radius (km)"
+    },
+    "results": {
+      "title": "Results",
+      "description": "Showing businesses matching your search criteria",
+      "noResults": "No results yet. Try searching for businesses above.",
+      "responseTime": "Response Time"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "unauthorized": "Please log in to continue.",
+    "forbidden": "You don't have permission to access this resource.",
+    "notFound": "The requested resource was not found.",
+    "rateLimit": "Rate limit exceeded. Please try again later.",
+    "network": "Network error. Please check your connection."
+  }
+}

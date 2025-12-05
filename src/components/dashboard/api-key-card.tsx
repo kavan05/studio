@@ -17,7 +17,7 @@ interface ApiKeyCardProps {
   userId: string;
 }
 
-export function ApiKeyCard({ apiKey, userId }: ApiKeyCardProps) {
+export function ApiKeyCard({ apiKey, userId: _userId }: ApiKeyCardProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
   const onCopy = () => {

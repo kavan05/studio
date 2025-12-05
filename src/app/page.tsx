@@ -1,6 +1,5 @@
 
 
-import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -9,7 +8,6 @@ import {
   Search,
   ShieldCheck,
 } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { PublicHeader } from '@/components/layout/public-header';
 import { Footer } from '@/components/layout/footer';
@@ -48,8 +46,6 @@ const features = [
 ];
 
 export default function HomePage() {
-  const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
-
   return (
     <div className="flex flex-col min-h-screen">
       <PublicHeader />

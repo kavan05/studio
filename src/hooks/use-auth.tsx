@@ -13,6 +13,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   type User,
+  type UserCredential,
 } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useAuth as useFirebaseAuth, useFirestore } from "@/firebase";
@@ -26,17 +27,17 @@ interface AdditionalUserData {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, pass: string) => Promise<any>;
-  signup: (email: string, pass: string, additionalData: AdditionalUserData) => Promise<any>;
-  logout: () => Promise<any>;
+  login: (email: string, pass: string) => Promise<UserCredential>;
+  signup: (email: string, pass: string, additionalData: AdditionalUserData) => Promise<UserCredential>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  login: async () => {},
-  signup: async () => {},
-  logout: async () => {},
+  login: async () => { throw new Error("Auth not initialized"); },
+  signup: async () => { throw new Error("Auth not initialized"); },
+  logout: async () => { throw new Error("Auth not initialized"); },
 });
 
 export const useAuth = () => useContext(AuthContext);
