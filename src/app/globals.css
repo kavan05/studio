@@ -1,0 +1,147 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 212 25% 95%; /* #E8EEF4 - Modern soft blue-gray */
+    --foreground: 215 33% 26%; /* #2E4057 */
+
+    --muted: 212 20% 88%;
+    --muted-foreground: 215 20% 45%;
+
+    --popover: 0 0% 100%; /* Pure white for contrast */
+    --popover-foreground: 215 33% 26%;
+
+    --card: 0 0% 100%; /* Pure white for cards */
+    --card-foreground: 215 33% 26%;
+
+    --border: 212 20% 85%;
+    --input: 212 20% 90%;
+
+    --primary: 215 33% 26%; /* #2E4057 */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 212 20% 90%;
+    --secondary-foreground: 215 33% 26%;
+
+    --accent: 221 45% 72%; /* Adjusted to blend with blue-gray theme */
+    --accent-foreground: 215 33% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 215 33% 26%;
+
+    --radius: 0.5rem;
+    
+    /* Sidebar specific variables */
+    --sidebar-background: 215 33% 18%; /* Darker shade of primary */
+    --sidebar-foreground: 215 20% 85%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 215 33% 18%;
+    --sidebar-accent: 215 33% 26%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 33% 22%;
+    --sidebar-ring: 210 40% 98%;
+  }
+
+  .dark {
+    --background: 215 33% 10%;
+    --foreground: 215 20% 90%;
+
+    --muted: 215 33% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --popover: 215 33% 8%;
+    --popover-foreground: 215 20% 90%;
+
+    --card: 215 33% 12%;
+    --card-foreground: 215 20% 90%;
+
+    --border: 215 33% 22%;
+    --input: 215 33% 18%;
+
+    --primary: 215 25% 90%;
+    --primary-foreground: 215 33% 10%;
+
+    --secondary: 215 33% 18%;
+    --secondary-foreground: 215 25% 90%;
+
+    --accent: 254 41% 74%;
+    --accent-foreground: 215 33% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 215 25% 80%;
+
+    /* Sidebar specific variables */
+    --sidebar-background: 215 33% 10%;
+    --sidebar-foreground: 215 20% 85%;
+    --sidebar-primary: 215 25% 90%;
+    --sidebar-primary-foreground: 215 33% 10%;
+    --sidebar-accent: 215 33% 18%;
+    --sidebar-accent-foreground: 215 25% 90%;
+    --sidebar-border: 215 33% 22%;
+    --sidebar-ring: 215 25% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .form-step {
+    @apply transition-all duration-300;
+  }
+
+  .input-field {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .input-field:focus {
+    @apply transform -translate-y-1 shadow-lg shadow-primary/20;
+  }
+}
+
+@layer utilities {
+  .animated-gradient {
+    background-size: 200% 200%;
+    background-image: linear-gradient(
+      -45deg,
+      hsl(212 25% 95%), /* Background */
+      hsl(212 20% 90%), /* Secondary */
+      hsl(212 25% 95%)  /* Background */
+    );
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .dark .animated-gradient {
+     background-image: linear-gradient(
+      -45deg,
+      hsl(215 33% 10%), /* Dark Background */
+      hsl(215 33% 15%), /* Darker Secondary */
+      hsl(215 33% 10%)  /* Dark Background */
+    );
+  }
+}
