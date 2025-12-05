@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { triggerManualSync } from "@/actions/user";
 import {
   Card,

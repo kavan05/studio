@@ -1,0 +1,195 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succes",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "search": "Rechercher",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "submit": "Soumettre",
+    "confirm": "Confirmer"
+  },
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "docs": "Documentation",
+    "settings": "Parametres",
+    "playground": "Bac a sable",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "logout": "Deconnexion"
+  },
+  "home": {
+    "hero": {
+      "title": "L'API Definitive des Entreprises Canadiennes",
+      "subtitle": "Alimentez vos applications avec des donnees commerciales completes et a jour de partout au Canada. Simple, fiable et gratuit pour commencer.",
+      "cta": "Obtenir une cle API gratuite",
+      "viewDocs": "Voir la documentation"
+    },
+    "features": {
+      "title": "Concu pour les developpeurs modernes",
+      "subtitle": "Tout ce dont vous avez besoin pour integrer les donnees commerciales canadiennes dans votre projet de maniere transparente.",
+      "search": {
+        "title": "Recherche puissante",
+        "description": "Accedez a des millions de dossiers d'entreprises canadiennes grace a nos points de terminaison de recherche rapides, fiables et faciles a utiliser."
+      },
+      "data": {
+        "title": "Donnees a jour",
+        "description": "Nos donnees sont automatiquement synchronisees chaque semaine a partir des portails gouvernementaux officiels pour garantir leur exactitude et leur fraicheur."
+      },
+      "developer": {
+        "title": "Axe sur les developpeurs",
+        "description": "Documentation claire, niveau gratuit genereux et tableau de bord dedie pour gerer vos cles et suivre votre utilisation."
+      },
+      "secure": {
+        "title": "Securise et evolutif",
+        "description": "Construit sur l'infrastructure moderne Firebase, garantissant a votre application une base securisee et evolutive."
+      }
+    },
+    "cta": {
+      "title": "Commencez a construire aujourd'hui",
+      "subtitle": "Generez une cle API en quelques secondes et commencez votre integration. Aucune carte de credit requise.",
+      "button": "Commencer gratuitement"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Entrez vos identifiants pour acceder a votre tableau de bord.",
+      "email": "Courriel",
+      "password": "Mot de passe",
+      "button": "Se connecter",
+      "noAccount": "Vous n'avez pas de compte?",
+      "signupLink": "S'inscrire"
+    },
+    "signup": {
+      "title": "Creer un compte",
+      "subtitle": "Obtenez votre cle API gratuite en quelques secondes.",
+      "name": "Nom complet",
+      "email": "Courriel",
+      "password": "Mot de passe",
+      "profession": "Profession",
+      "referral": "Comment avez-vous entendu parler de nous?",
+      "button": "S'inscrire",
+      "hasAccount": "Vous avez deja un compte?",
+      "loginLink": "Se connecter"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "apiRequests": "Requetes API (Aujourd'hui)",
+    "dailyLimit": "/ {limit} limite quotidienne",
+    "apiKeyStatus": "Statut de la cle API",
+    "active": "Active",
+    "operational": "Votre cle est operationnelle",
+    "documentation": "Documentation",
+    "stableRelease": "Version stable",
+    "apiKey": {
+      "title": "Cle API",
+      "description": "Utilisez cette cle pour authentifier vos requetes API.",
+      "copy": "Copier la cle API",
+      "copied": "Copie!",
+      "warning": "Gardez votre cle API securisee. Ne la partagez pas publiquement."
+    },
+    "usage": {
+      "title": "Utilisation de l'API",
+      "description": "Votre nombre de requetes API des 7 derniers jours."
+    }
+  },
+  "settings": {
+    "title": "Parametres",
+    "account": {
+      "title": "Informations du compte",
+      "description": "Les details de votre compte. Ces informations ne sont pas partagees publiquement.",
+      "email": "Adresse courriel",
+      "userId": "ID utilisateur"
+    },
+    "sync": {
+      "title": "Synchronisation des donnees",
+      "description": "Declenchez manuellement une synchronisation des donnees commerciales depuis des sources externes.",
+      "button": "Synchroniser les donnees",
+      "lastSync": "Derniere synchronisation: {date}"
+    },
+    "danger": {
+      "title": "Zone de danger",
+      "description": "Ces actions sont irreversibles. Veuillez proceder avec prudence.",
+      "regenerate": "Generer une nouvelle cle API",
+      "regenerateWarning": "Votre cle API actuelle sera invalidee immediatement.",
+      "regenerateButton": "Regenerer la cle",
+      "confirmTitle": "Etes-vous absolument sur?",
+      "confirmDescription": "Cela invalidera definitivement votre cle API actuelle. Toutes les applications l'utilisant ne pourront plus acceder a l'API."
+    }
+  },
+  "docs": {
+    "title": "Documentation API",
+    "subtitle": "Integrez les donnees commerciales canadiennes dans votre application avec notre API REST simple.",
+    "authentication": {
+      "title": "Authentification",
+      "description": "Toutes les requetes API doivent etre authentifiees a l'aide d'une cle API. Passez votre cle dans l'en-tete Authorization en tant que jeton Bearer."
+    },
+    "endpoints": {
+      "title": "Points de terminaison",
+      "search": {
+        "title": "Recherche par nom",
+        "description": "Recherchez des entreprises par nom."
+      },
+      "category": {
+        "title": "Filtrer par categorie",
+        "description": "Recuperez les entreprises appartenant a une categorie specifique (code SCIAN ou description)."
+      },
+      "city": {
+        "title": "Filtrer par ville",
+        "description": "Recuperez les entreprises dans une ville specifique."
+      },
+      "nearby": {
+        "title": "Recherche a proximite",
+        "description": "Trouvez des entreprises pres de coordonnees geographiques specifiques."
+      }
+    }
+  },
+  "playground": {
+    "title": "Bac a sable API",
+    "subtitle": "Testez les points de terminaison API de maniere interactive. Votre cle API est utilisee automatiquement.",
+    "search": {
+      "title": "Recherche par nom",
+      "description": "Trouvez des entreprises par leur nom",
+      "placeholder": "ex: Feuille d'erable"
+    },
+    "category": {
+      "title": "Recherche par categorie",
+      "description": "Filtrez les entreprises par categorie ou code SCIAN",
+      "placeholder": "ex: Restaurant, Fabrication"
+    },
+    "city": {
+      "title": "Recherche par ville",
+      "description": "Trouvez des entreprises dans une ville specifique",
+      "placeholder": "ex: Montreal, Quebec"
+    },
+    "nearby": {
+      "title": "Recherche a proximite",
+      "description": "Trouvez des entreprises pres de coordonnees geographiques",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "radius": "Rayon (km)"
+    },
+    "results": {
+      "title": "Resultats",
+      "description": "Affichage des entreprises correspondant a vos criteres de recherche",
+      "noResults": "Pas encore de resultats. Essayez de rechercher des entreprises ci-dessus.",
+      "responseTime": "Temps de reponse"
+    }
+  },
+  "errors": {
+    "generic": "Quelque chose s'est mal passe. Veuillez reessayer.",
+    "unauthorized": "Veuillez vous connecter pour continuer.",
+    "forbidden": "Vous n'avez pas la permission d'acceder a cette ressource.",
+    "notFound": "La ressource demandee n'a pas ete trouvee.",
+    "rateLimit": "Limite de taux depassee. Veuillez reessayer plus tard.",
+    "network": "Erreur reseau. Veuillez verifier votre connexion."
+  }
+}

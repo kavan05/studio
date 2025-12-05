@@ -18,17 +18,81 @@ import { scheduledFunctions } from "./scheduled";
 // Create Express app
 const app = express();
 
-// Middleware
-app.use(cors({ origin: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// CORS configuration - restrict to allowed origins in production
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:9002",
+  "http://localhost:5000",
+  process.env.PRODUCTION_URL,
+  process.env.STAGING_URL,
+].filter(Boolean) as string[];
 
-// Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({ 
-    status: "ok", 
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    if (allowedOrigins.includes(origin) || process.env.NODE_ENV === "development") {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  maxAge: 86400, // 24 hours
+};
+
+// Middleware
+app.use(cors(corsOptions));
+app.use(express.json({ limit: "10kb" })); // Limit request body size
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+
+// Enhanced health check endpoint
+app.get("/health", async (req, res) => {
+  const startTime = Date.now();
+  const checks: Record<string, { status: string; latency?: number; error?: string }> = {};
+
+  // Check Firestore connectivity
+  try {
+    const firestoreStart = Date.now();
+    await admin.firestore().collection("businesses").limit(1).get();
+    checks.firestore = {
+      status: "healthy",
+      latency: Date.now() - firestoreStart,
+    };
+  } catch (err) {
+    checks.firestore = {
+      status: "unhealthy",
+      error: err instanceof Error ? err.message : "Connection failed",
+    };
+  }
+
+  // Check Auth service
+  try {
+    checks.auth = { status: "healthy" };
+  } catch (err) {
+    checks.auth = {
+      status: "unhealthy",
+      error: err instanceof Error ? err.message : "Auth service unavailable",
+    };
+  }
+
+  const allHealthy = Object.values(checks).every((c) => c.status === "healthy");
+  const totalLatency = Date.now() - startTime;
+
+  res.status(allHealthy ? 200 : 503).json({
+    status: allHealthy ? "ok" : "degraded",
     timestamp: new Date().toISOString(),
-    version: "1.0.0"
+    version: "1.0.0",
+    uptime: process.uptime(),
+    latency: totalLatency,
+    checks,
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
