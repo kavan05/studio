@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm-run-all --parallel \"next dev\" dev:emulators",
+    "dev": "next dev",
     "dev:emulators": "cd functions && npm run build && cd .. && firebase emulators:start",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
