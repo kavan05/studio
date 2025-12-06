@@ -112,7 +112,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <ApiKeyCard apiKey={userData.apiKey} userId={user.uid} />
-        <Card className="flex flex-col">
+        <Card className="flex flex-col h-full">
           <CardHeader>
             <CardTitle className="font-headline">API Usage</CardTitle>
             <CardDescription>
