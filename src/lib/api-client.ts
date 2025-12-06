@@ -46,8 +46,9 @@ class BizHubApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 
-                   'http://127.0.0.1:5000/v1';
+    // Use a relative URL to ensure requests are sent to the same origin.
+    // This works for both local emulation and deployed environments.
+    this.baseUrl = '/v1';
   }
 
   private async request<T>(
