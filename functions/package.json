@@ -37,4 +37,5 @@
     "@types/babel__template": "^7.4.4",
     "@types/babel__traverse": "^7.20.5"
   },
-  "private": true}
+  "private": true
+}
