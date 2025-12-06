@@ -46,7 +46,7 @@ class BizHubApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = '/api/v1';
+    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://us-central1-studio-9562671715-adbe9.cloudfunctions.net/api/v1';
   }
 
   private async request<T>(

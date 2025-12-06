@@ -48,6 +48,7 @@ export const api = functions
   .runWith({
     timeoutSeconds: 60,
     memory: "512MB",
+    invoker: "public", // Add this line to allow public access
   })
   .https.onRequest(app);
 
