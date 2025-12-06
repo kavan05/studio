@@ -29,7 +29,7 @@
     ],
     "rewrites": [
       {
-        "source": "/v1/**",
+        "source": "/api/v1/**",
         "function": "api"
       },
       {
