@@ -35,7 +35,7 @@ app.get("/health", (req, res) => {
 // API routes
 // The base path is handled by the rewrite in firebase.json.
 // The rewrite for /v1/** sends the rest of the path to this function.
-app.use("/", apiRouter);
+app.use("/v1", apiRouter);
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
