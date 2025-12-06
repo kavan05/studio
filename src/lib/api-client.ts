@@ -69,7 +69,12 @@ class BizHubApiClient {
       });
 
       if (!response.ok) {
-        const error: ApiError = await response.json();
+        let error: ApiError;
+        try {
+          error = await response.json();
+        } catch (e) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
         throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -77,7 +82,7 @@ class BizHubApiClient {
     } catch (error) {
       if (error instanceof Error) {
         // Specifically check for network errors, which manifest as TypeError in fetch
-        if (error instanceof TypeError && error.message.includes('fetch')) {
+        if (error instanceof TypeError) {
            throw new Error('Network error: Could not connect to the API. Is the server running?');
         }
         throw error;

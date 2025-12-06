@@ -35,6 +35,7 @@ app.get("/health", (req, res) => {
 // API routes
 // The base path is handled by the rewrite in firebase.json.
 // The rewrite for /v1/** sends the rest of the path to this function.
+// So the express app sees paths starting from /v1
 app.use("/v1", apiRouter);
 
 // Error handling middleware

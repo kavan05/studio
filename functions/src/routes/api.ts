@@ -8,7 +8,7 @@ import { businessController } from "../controllers/businessController";
 
 const router = Router();
 
-// Apply middleware to all routes
+// Apply middleware to all routes in this router
 router.use(apiLogger);
 router.use(validateApiKey);
 router.use(rateLimiter);
