@@ -1,4 +1,3 @@
-
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import express from "express";
@@ -32,9 +31,8 @@ app.get("/health", (req, res) => {
   });
 });
 
-// The rewrite rule for /api/v1/** sends the rest of the path to this function.
-// So the express app sees paths starting from /v1/...
-app.use("/v1", apiRouter);
+// Mount router at /api/v1 to match the full path received from the rewrite
+app.use("/api/v1", apiRouter);
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -61,7 +59,6 @@ export const weeklyUsageReport = scheduledFunctions.weeklyUsageReport;
 
 // Export utility functions for admin tasks
 export const generateApiKeyForUser = functions.https.onCall(async (data, context) => {
-  // Only authenticated users can call this
   if (!context.auth) {
     throw new functions.https.HttpsError("unauthenticated", "User must be authenticated");
   }
@@ -70,7 +67,6 @@ export const generateApiKeyForUser = functions.https.onCall(async (data, context
   const crypto = require("crypto");
   const apiKey = `bh_live_${crypto.randomBytes(32).toString("hex")}`;
 
-  // Update user document with new API key
   await admin.firestore().collection("users").doc(userId).update({
     apiKey,
     updatedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -87,12 +83,6 @@ export const manualDataSync = functions.runWith({
   if (!context.auth) {
     throw new functions.https.HttpsError("unauthenticated", "You must be logged in to perform this action.");
   }
-  
-  // Optional: Add admin role check for production apps
-  // const adminDoc = await admin.firestore().collection('admins').doc(context.auth.uid).get();
-  // if (!adminDoc.exists) {
-  //   throw new functions.https.HttpsError("permission-denied", "You do not have permission to perform this action.");
-  // }
 
   console.log(`Manual data sync triggered by user: ${context.auth.uid}`);
 

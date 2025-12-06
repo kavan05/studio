@@ -83,8 +83,20 @@ const DATA_SOURCES: Record<string, DataSource> = {
 };
 
 export class DataIngestionService {
-  private db = admin.firestore();
+  private _db: FirebaseFirestore.Firestore | null = null;
   private batchSize = 500;
+
+  // Lazy getter for Firestore
+  private get db(): FirebaseFirestore.Firestore {
+    if (!this._db) {
+      this._db = admin.firestore();
+    }
+    return this._db;
+  }
+
+  constructor() {
+    // Don't initialize Firebase here - just set up the class
+  }
 
   /**
    * Fetch data from a provincial open data portal
