@@ -20,24 +20,34 @@
       ]
     }
   ],
-  "hosting": {
-    "source": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "/v1/**",
-        "function": "api"
+  "hosting": [
+    {
+      "target": "bizhub-api-101",
+      "source": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "frameworksBackend": {
+        "region": "us-central1"
       },
-      {
-        "source": "**",
-        "app": {}
-      }
-    ]
-  },
+      "rewrites": [
+        {
+          "source": "/v1/**",
+          "function": {
+            "functionId": "api",
+            "region": "us-central1",
+            "pinTag": true
+          }
+        },
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
   "emulators": {
     "auth": {
       "port": 9099,
@@ -53,7 +63,7 @@
     },
     "hosting": {
       "port": 5000,
-      "host": "12T.0.0.1"
+      "host": "127.0.0.1"
     },
     "ui": {
       "enabled": true,
