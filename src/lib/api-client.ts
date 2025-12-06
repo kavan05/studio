@@ -46,7 +46,7 @@ class BizHubApiClient {
 
   constructor() {
     this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 
-                   'http://127.0.0.1:5001/bizhub-api-101/us-central1/api/api/v1';
+                   'http://127.0.0.1:5000/api/v1';
   }
 
   private async request<T>(
@@ -74,6 +74,10 @@ class BizHubApiClient {
       return response.json();
     } catch (error) {
       if (error instanceof Error) {
+        // Specifically check for network errors, which manifest as TypeError in fetch
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+           throw new Error('Network error: Could not connect to the API. Is the server running?');
+        }
         throw error;
       }
       throw new Error('An unexpected error occurred');
