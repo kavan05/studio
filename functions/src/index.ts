@@ -21,30 +21,19 @@ import { scheduledFunctions } from "./scheduled";
 const app = express();
 
 // --- CORS Configuration ---
-// Define allowed origins
+// Define allowed origins for production
 const allowedOrigins = [
   'https://studio-9562671715-adbe9.web.app', // Your production hosting URL
   'http://localhost:3000', // Your local Next.js dev server
 ];
-
-// In a development environment, we might be inside a cloud workstation.
-// The origin will be different. We can get it from the request headers.
-// We also need to handle the port-forwarded URL if it exists.
-if (process.env.NODE_ENV === 'development') {
-    const devOrigin = process.env.STUDIO_EXTERNAL_WEB_PREVIEW_URL;
-    if (devOrigin) {
-        allowedOrigins.push(devOrigin);
-    }
-}
-
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
-    // dynamically allow origins from cloud workstations
-    if (origin && (origin.includes('cloudworkstations.dev') || origin.includes('web.app'))) {
+    // In a development environment, dynamically allow origins from cloud workstations.
+    if (process.env.NODE_ENV === 'development' && origin.includes('cloudworkstations.dev')) {
         return callback(null, true);
     }
     
@@ -63,8 +52,12 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// This groups all the API v1 routes under a single /api parent
+const api = express();
+api.use("/v1", apiRouter);
+
 // Health check endpoint
-app.get("/api/health", (req, res) => {
+api.get("/health", (req, res) => {
   res.json({
     status: "ok",
     timestamp: new Date().toISOString(),
@@ -72,8 +65,9 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// API routes
-app.use("/api/v1", apiRouter);
+// Mount the entire API at the /api path to match the rewrite
+app.use('/api', api);
+
 
 // Error handling middleware
 app.use(
