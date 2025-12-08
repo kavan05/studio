@@ -1,4 +1,3 @@
-
 /**
  * API Client for BizHub API
  * Handles all API communications with proper error handling
@@ -42,11 +41,22 @@ export interface ApiStats {
   apiVersion: string;
 }
 
+const getBaseUrl = () => {
+    if (process.env.NODE_ENV === 'development') {
+      const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+      // This matches the emulator URL structure
+      return `http://127.0.0.1:5001/${projectId}/us-central1/api`;
+    }
+    // For production, it will be the root of the domain, and rewrites will handle it.
+    return '/api';
+}
+
+
 class BizHubApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://us-central1-studio-9562671715-adbe9.cloudfunctions.net/api/v1';
+    this.baseUrl = getBaseUrl();
   }
 
   private async request<T>(
@@ -96,7 +106,7 @@ class BizHubApiClient {
     limit: number = 10
   ): Promise<ApiResponse<Business>> {
     return this.request<ApiResponse<Business>>(
-      `/businesses/search?name=${encodeURIComponent(name)}&page=${page}&limit=${limit}`,
+      `/v1/businesses/search?name=${encodeURIComponent(name)}&page=${page}&limit=${limit}`,
       apiKey
     );
   }
@@ -108,7 +118,7 @@ class BizHubApiClient {
     limit: number = 10
   ): Promise<ApiResponse<Business>> {
     return this.request<ApiResponse<Business>>(
-      `/businesses/category?type=${encodeURIComponent(category)}&page=${page}&limit=${limit}`,
+      `/v1/businesses/category?type=${encodeURIComponent(category)}&page=${page}&limit=${limit}`,
       apiKey
     );
   }
@@ -120,7 +130,7 @@ class BizHubApiClient {
     limit: number = 10
   ): Promise<ApiResponse<Business>> {
     return this.request<ApiResponse<Business>>(
-      `/businesses/city?name=${encodeURIComponent(city)}&page=${page}&limit=${limit}`,
+      `/v1/businesses/city?name=${encodeURIComponent(city)}&page=${page}&limit=${limit}`,
       apiKey
     );
   }
@@ -133,17 +143,17 @@ class BizHubApiClient {
     limit: number = 10
   ): Promise<{ data: Business[]; radius: number; unit: string; center: { lat: number; lng: number } }> {
     return this.request(
-      `/businesses/nearby?lat=${lat}&lng=${lng}&radius=${radius}&limit=${limit}`,
+      `/v1/businesses/nearby?lat=${lat}&lng=${lng}&radius=${radius}&limit=${limit}`,
       apiKey
     );
   }
 
   async getBusinessById(apiKey: string, id: string): Promise<Business> {
-    return this.request<Business>(`/businesses/${id}`, apiKey);
+    return this.request<Business>(`/v1/businesses/${id}`, apiKey);
   }
 
   async getStats(apiKey: string): Promise<ApiStats> {
-    return this.request<ApiStats>('/stats', apiKey);
+    return this.request<ApiStats>('/v1/stats', apiKey);
   }
 }
 

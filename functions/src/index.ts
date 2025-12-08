@@ -32,7 +32,11 @@ app.get("/health", (req, res) => {
 });
 
 // Mount router at /api/v1 to match the full path received from the rewrite
-app.use("/api/v1", apiRouter);
+app.use("/v1", apiRouter);
+
+const apiApp = express();
+apiApp.use('/api', app);
+
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -50,7 +54,7 @@ export const api = functions
     memory: "512MB",
     invoker: "public", // Add this line to allow public access
   })
-  .https.onRequest(app);
+  .https.onRequest(apiApp);
 
 // Export scheduled functions
 export const syncBusinessData = scheduledFunctions.syncBusinessData;
