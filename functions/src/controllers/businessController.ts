@@ -305,6 +305,9 @@ class BusinessController {
         this.getProvinceStats(),
       ]);
 
+      // Add cache headers for stats endpoint
+      res.setHeader("Cache-Control", "public, max-age=300"); // 5 minutes
+
       return res.json({
         totalBusinesses: businessCount,
         byProvince: provinceStats,
@@ -315,6 +318,72 @@ class BusinessController {
       return res.status(500).json({
         error: "Internal Server Error",
         message: "Failed to fetch statistics",
+      });
+    }
+  }
+
+  /**
+   * Export businesses data as CSV or JSON
+   * GET /export?format=csv|json&city=Toronto&limit=1000
+   */
+  exportData = async (req: AuthRequest, res: Response) => {
+    try {
+      const { format = "json", city, category, province, limit = 100 } = req.query;
+      const limitNum = Math.min(parseInt(limit as string) || 100, 1000);
+
+      let query: FirebaseFirestore.Query = this.db.collection("businesses");
+
+      // Apply filters
+      if (city && typeof city === "string") {
+        query = query.where("city", "==", city.toUpperCase());
+      }
+      if (category && typeof category === "string") {
+        query = query.where("category", "==", category.toUpperCase());
+      }
+      if (province && typeof province === "string") {
+        query = query.where("province", "==", province.toUpperCase());
+      }
+
+      const snapshot = await query.limit(limitNum).get();
+      const businesses = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      if (format === "csv") {
+        // Generate CSV
+        const headers = ["id", "name", "address", "city", "province", "postal_code", "category", "phone", "email", "website"];
+        const csvRows = [headers.join(",")];
+
+        for (const biz of businesses) {
+          const row = headers.map((header) => {
+            const value = (biz as Record<string, unknown>)[header];
+            if (value === undefined || value === null) return "";
+            const stringValue = String(value).replace(/"/g, '""');
+            return `"${stringValue}"`;
+          });
+          csvRows.push(row.join(","));
+        }
+
+        const csv = csvRows.join("\n");
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader("Content-Disposition", `attachment; filename="businesses_export_${Date.now()}.csv"`);
+        return res.send(csv);
+      } else {
+        // Return JSON
+        res.setHeader("Content-Type", "application/json");
+        res.setHeader("Content-Disposition", `attachment; filename="businesses_export_${Date.now()}.json"`);
+        return res.json({
+          exportedAt: new Date().toISOString(),
+          count: businesses.length,
+          data: businesses,
+        });
+      }
+    } catch (error) {
+      console.error("Export error:", error);
+      return res.status(500).json({
+        error: "Internal Server Error",
+        message: "Failed to export data",
       });
     }
   }

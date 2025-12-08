@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { LoginForm } from "@/components/auth/login-form";
+
+// Prevent static generation - requires Firebase client-side initialization
+export const dynamic = "force-dynamic";
 import {
   Card,
   CardContent,
