@@ -1,3 +1,4 @@
+
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import express from "express";
@@ -8,7 +9,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 // Initialize Firebase Admin
-admin.initializeApp();
+if (admin.apps.length === 0) {
+  admin.initializeApp();
+}
 
 // Import route handlers
 import { apiRouter } from "./routes/api";
@@ -17,44 +20,87 @@ import { scheduledFunctions } from "./scheduled";
 // Create Express app
 const app = express();
 
+// --- CORS Configuration ---
+// Define allowed origins
+const allowedOrigins = [
+  'https://studio-9562671715-adbe9.web.app', // Your production hosting URL
+  'http://localhost:3000', // Your local Next.js dev server
+];
+
+// In a development environment, we might be inside a cloud workstation.
+// The origin will be different. We can get it from the request headers.
+// We also need to handle the port-forwarded URL if it exists.
+if (process.env.NODE_ENV === 'development') {
+    const devOrigin = process.env.STUDIO_EXTERNAL_WEB_PREVIEW_URL;
+    if (devOrigin) {
+        allowedOrigins.push(devOrigin);
+    }
+}
+
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    // dynamically allow origins from cloud workstations
+    if (origin && (origin.includes('cloudworkstations.dev') || origin.includes('web.app'))) {
+        return callback(null, true);
+    }
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+};
+
+app.use(cors(corsOptions));
+
+
 // Middleware
-app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({ 
-    status: "ok", 
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
     timestamp: new Date().toISOString(),
-    version: "1.0.0"
+    version: "1.0.0",
   });
 });
 
-// Mount router at /api/v1 to match the full path received from the rewrite
-app.use("/v1", apiRouter);
-
-const apiApp = express();
-apiApp.use('/api', app);
-
+// API routes
+app.use("/api/v1", apiRouter);
 
 // Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error("Unhandled error:", err);
-  res.status(500).json({
-    error: "Internal Server Error",
-    message: process.env.NODE_ENV === "development" ? err.message : "An unexpected error occurred"
-  });
-});
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error("Unhandled error:", err);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message:
+        process.env.NODE_ENV === "development"
+          ? err.message
+          : "An unexpected error occurred",
+    });
+  }
+);
 
-// Export HTTP function with increased timeout and memory
+// Export HTTP function
 export const api = functions
   .runWith({
     timeoutSeconds: 60,
     memory: "512MB",
-    invoker: "public", // Add this line to allow public access
   })
-  .https.onRequest(apiApp);
+  .https.onRequest(app);
 
 // Export scheduled functions
 export const syncBusinessData = scheduledFunctions.syncBusinessData;
@@ -63,41 +109,61 @@ export const resetDailyLimits = scheduledFunctions.resetDailyLimits;
 export const weeklyUsageReport = scheduledFunctions.weeklyUsageReport;
 
 // Export utility functions for admin tasks
-export const generateApiKeyForUser = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError("unauthenticated", "User must be authenticated");
+export const generateApiKeyForUser = functions.https.onCall(
+  async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "User must be authenticated"
+      );
+    }
+
+    const userId = context.auth.uid;
+    const crypto = require("crypto");
+    const apiKey = `bh_live_${crypto.randomBytes(32).toString("hex")}`;
+
+    await admin
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .update({
+        apiKey,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+    return { apiKey };
   }
+);
 
-  const userId = context.auth.uid;
-  const crypto = require("crypto");
-  const apiKey = `bh_live_${crypto.randomBytes(32).toString("hex")}`;
-
-  await admin.firestore().collection("users").doc(userId).update({
-    apiKey,
-    updatedAt: admin.firestore.FieldValue.serverTimestamp()
-  });
-
-  return { apiKey };
-});
-
-export const manualDataSync = functions.runWith({
+export const manualDataSync = functions
+  .runWith({
     timeoutSeconds: 540,
     memory: "2GB",
-  }).https.onCall(async (data, context) => {
-    
-  if (!context.auth) {
-    throw new functions.https.HttpsError("unauthenticated", "You must be logged in to perform this action.");
-  }
+  })
+  .https.onCall(async (data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "You must be logged in to perform this action."
+      );
+    }
 
-  console.log(`Manual data sync triggered by user: ${context.auth.uid}`);
+    console.log(`Manual data sync triggered by user: ${context.auth.uid}`);
 
-  try {
-    const result = await dataIngestionService.syncAllData();
-    console.log("Manual sync completed successfully:", result);
-    return { success: true, message: "Data sync completed successfully.", result };
-  } catch (error) {
-    console.error("Manual sync failed:", error);
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred during sync.";
-    throw new functions.https.HttpsError("internal", errorMessage, error);
-  }
-});
+    try {
+      const result = await dataIngestionService.syncAllData();
+      console.log("Manual sync completed successfully:", result);
+      return {
+        success: true,
+        message: "Data sync completed successfully.",
+        result,
+      };
+    } catch (error) {
+      console.error("Manual sync failed:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred during sync.";
+      throw new functions.https.HttpsError("internal", errorMessage, error);
+    }
+  });
