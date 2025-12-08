@@ -42,13 +42,14 @@ export interface ApiStats {
 }
 
 const getBaseUrl = () => {
-    if (process.env.NODE_ENV === 'development') {
-      const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-      // This matches the emulator URL structure
-      return `http://127.0.0.1:5001/${projectId}/us-central1/api`;
-    }
-    // For production, it will be the root of the domain, and rewrites will handle it.
-    return '/api';
+  const isDev = process.env.NODE_ENV === 'development';
+  if (isDev) {
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    // This is the standard local function emulator URL structure.
+    return `http://127.0.0.1:5001/${projectId}/us-central1/api`;
+  }
+  // In production, Firebase Hosting rewrites /api/ to the function.
+  return '/api';
 }
 
 
