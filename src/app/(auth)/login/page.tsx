@@ -14,21 +14,26 @@ import {
 
 export default function LoginPage() {
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome Back</CardTitle>
-        <CardDescription>
+    <Card className="glass-card border-border/50">
+      <CardHeader className="text-center space-y-2">
+        <CardTitle className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+          Welcome Back
+        </CardTitle>
+        <CardDescription className="text-base">
           Enter your credentials to access your dashboard.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <LoginForm />
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
-        <div className="text-sm text-muted-foreground">
+      <CardFooter className="flex flex-col gap-4 border-t border-border/50 pt-6">
+        <div className="text-sm text-muted-foreground text-center">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-primary hover:underline">
-            Sign up
+          <Link
+            href="/signup"
+            className="font-medium text-primary hover:text-accent transition-colors underline-offset-4 hover:underline"
+          >
+            Sign up for free
           </Link>
         </div>
       </CardFooter>
