@@ -41,24 +41,14 @@ export interface ApiStats {
   apiVersion: string;
 }
 
-const getBaseUrl = () => {
-  const isDev = process.env.NODE_ENV === 'development';
-  if (isDev) {
-    // For local development, we target the function emulator directly.
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-    return `http://127.0.0.1:5001/${projectId}/us-central1`;
-  }
-  // In production, Firebase Hosting rewrites /api to the function,
-  // so we can use a relative path.
-  return '';
-}
-
-
 class BizHubApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = getBaseUrl();
+    // This now correctly uses the environment variable for both local and prod.
+    // In local dev, it will be http://127.0.0.1:5001/...
+    // In prod, it will be your deployed function URL.
+    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
   }
 
   private async request<T>(
@@ -66,8 +56,12 @@ class BizHubApiClient {
     apiKey: string,
     options?: RequestInit
   ): Promise<T> {
-    // The endpoint now includes the /api/v1 prefix
+    // The endpoint now includes the /api/v1 prefix from the router
     const url = `${this.baseUrl}${endpoint}`;
+    
+    if (!this.baseUrl) {
+      throw new Error('API URL is not configured. Please set NEXT_PUBLIC_API_URL environment variable.');
+    }
     
     try {
       const response = await fetch(url, {

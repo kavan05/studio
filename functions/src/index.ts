@@ -41,6 +41,11 @@ const corsOptions: cors.CorsOptions = {
       return callback(null, true);
     }
 
+    // Allow localhost for emulators
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      return callback(null, true);
+    }
+
     return callback(new Error('Not allowed by CORS'));
   },
 };
