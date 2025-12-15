@@ -61,7 +61,7 @@
     "framer-motion": "^11.3.19",
     "genkit": "^1.20.0",
     "lucide-react": "^0.475.0",
-    "next": "^15.1.4",
+    "next": "^16.0.10",
     "next-intl": "^4.5.8",
     "next-themes": "^0.3.0",
     "npm-run-all": "^4.1.5",
